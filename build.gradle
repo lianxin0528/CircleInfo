@@ -31,8 +31,7 @@ allprojects {
     maven { url 'https://oss.sonatype.org/content/repositories/snapshots' }
     maven { url "http://objectbox.net/beta-repo/" }
   }
-
-//  task clean(type: Delete) {
-//    delete rootProject.buildDir
-//  }
+}
+task clean(type: Delete) {
+  delete rootProject.buildDir
 }

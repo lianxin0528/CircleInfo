@@ -1,110 +1,113 @@
 package space.lianxin.circleinfo.view
 
-import android.os.Bundle
-import android.os.PersistableBundle
-import com.aimymusic.ambase.mvvm.MvRxViewModel
-import com.aimymusic.ambase.ui.activity.BaseActivity
-import com.airbnb.epoxy.AsyncEpoxyController
-import com.airbnb.epoxy.EpoxyController
-import com.airbnb.mvrx.BaseMvRxViewModel
-import com.airbnb.mvrx.MvRxState
-import com.airbnb.mvrx.MvRxView
-import com.airbnb.mvrx.MvRxViewModelStore
+import android.util.Log
+import android.view.View
+import com.airbnb.mvrx.withState
 import kotlinx.android.synthetic.main.activity_circle_info.*
+import kotlinx.android.synthetic.main.layout_title.*
 import space.lianxin.circleinfo.R
+import space.lianxin.circleinfo.extention.CommMvRxEpoxyActivity
+import space.lianxin.circleinfo.extention.simpleController
+import space.lianxin.circleinfo.model.circleInfoItem
 import space.lianxin.circleinfo.viewmodel.CircleInfoState
 import space.lianxin.circleinfo.viewmodel.CircleInfoViewModel
 
-
-open class CircleInfoActivity : BaseActivity(), MvRxView {
-
-  override val mvrxViewModelStore by lazy { MvRxViewModelStore(viewModelStore) }
-
-  protected val epoxyController by lazy {
-    simpleController(viewModel) {
-    }
-  }
-
-  private val viewModel: CircleInfoViewModel by lazy {
-    CircleInfoViewModel(4345)
-  }
-
-  override fun onStart() {
-    postInvalidate()
-    super.onStart()
-  }
-
-  protected fun subscribeVM(vararg viewModels: BaseMvRxViewModel<*>) {
-    viewModels.forEach {
-      it.subscribe(owner = this, subscriber = {
-        postInvalidate()
-      })
-    }
-  }
-
-  override fun onCreate(savedInstanceState: Bundle?, persistentState: PersistableBundle?) {
-    mvrxViewModelStore.restoreViewModels(this, savedInstanceState)
-    super.onCreate(savedInstanceState, persistentState)
-  }
-
-  override fun onSaveInstanceState(outState: Bundle, outPersistentState: PersistableBundle) {
-    mvrxViewModelStore.saveViewModels(outState)
-    super.onSaveInstanceState(outState, outPersistentState)
-  }
-
-  override fun initData() {
-    selectSubscribe()
-
-  }
-
-  override fun initView() {
-    erlCircleInfoList.setController(CircleInfoController(viewModel))
-  }
-
-  override fun invalidate() {}
-
+/**
+ * 圈子消息列表视图
+ */
+open class CircleInfoActivity : CommMvRxEpoxyActivity(), View.OnClickListener {
   /** 指定布局id */
   override fun layoutResId(): Int = R.layout.activity_circle_info
+
+  /** viewModel */
+  private val viewModel: CircleInfoViewModel by lazy { CircleInfoViewModel(4345) }
+//  private val viewModel: CircleInfoViewModel by lazy { CircleInfoViewModel() }
+//  private val viewModel by activityViewModel(CircleInfoViewModel::class)
+//  private val viewModel by activityViewModel(CircleInfoViewModel::class)
+//  override val mvrxViewModelStore by lazy { MvRxViewModelStore(viewModelStore) }
+
+  /** 初始化视图 */
+  override fun initView() {
+//    erlCircleInfoList.setController(epoxyController)
+
+    btn1.setOnClickListener(this)
+    btn2.setOnClickListener(this)
+    btn3.setOnClickListener(this)
+    btn4.setOnClickListener(this)
+    btn5.setOnClickListener(this)
+
+    // 设置刷新监听
+    srlCircleInfoRefresh.setOnRefreshListener {
+      //      viewModel.refresh()
+      // 取消刷新UI
+      srlCircleInfoRefresh.isRefreshing = false
+    }
+    erlCircleInfoList.setController(epoxyController)
+  }
+
+  /** 初始化数据 */
+  override fun initData() {
+    // 观察数据
+    selectSubscribe()
+    // 刷新或者首次加载
+//    viewModel.refresh()
+  }
+
+  /** 加载Controller */
+  override fun epoxyController() = simpleController(viewModel) {
+    withState(viewModel) { state ->
+      if (state.circleinfoBeans.isNotEmpty()) {
+        for (i in state.circleinfoBeans.indices) {
+          circleInfoItem {
+            id(state.circleinfoBeans[i].id)
+            circleInfoBean(state.circleinfoBeans[i])
+            if (state.messages.isNotEmpty()) {
+              state.messages[i]?.let {
+                msgBeans(it)
+              }
+            }
+          }
+        }
+      }
+    }
+  }
 
   /**
    * 观察属性变化，做出相应变化
    */
   private fun selectSubscribe() {
     // 圈子信息
-    viewModel.selectSubscribe(this,
+    viewModel.selectSubscribe(
+      this,
       prop1 = CircleInfoState::circleinfoBeans,
-      uniqueOnly = true) {
-      erlCircleInfoList.requestModelBuild()
+      uniqueOnly = true
+    ) {
+      Log.d("qingyi", "CircleInfoActivity::selectSubscribe: circleinfoBeans")
     }
-    // 消息
-    viewModel.selectSubscribe(this,
+    // 圈子消息
+    viewModel.selectSubscribe(
+      this,
       prop1 = CircleInfoState::messages,
-      uniqueOnly = true) {
-
+      uniqueOnly = true
+    ) {
+      Log.d("qingyi", "CircleInfoActivity::selectSubscribe: messages")
     }
   }
 
-}
-
-open class MvRxEpoxyController(
-  val buildModelsCallback: EpoxyController.() -> Unit = {}
-) : AsyncEpoxyController() {
-
-  override fun buildModels() {
-    buildModelsCallback()
+  /** 点击事件 */
+  override fun onClick(v: View?) {
+    when (v?.id) {
+      R.id.btn1 -> {
+      }
+      R.id.btn2 -> {
+      }
+      R.id.btn3 -> {
+      }
+      R.id.btn4 -> {
+      }
+      R.id.btn5 -> {
+      }
+    }
   }
-}
 
-/**
- * Create a [MvRxEpoxyController] that builds models with the given callback.
- * When models are built the current type of the viewmodel will be provided.
- */
-fun <S : MvRxState, A : MvRxViewModel<S>> BaseActivity.simpleController(
-  viewModel: A,
-  buildModels: EpoxyController.(state: S) -> Unit
-) = MvRxEpoxyController {
-  //    if (isDestroyed) return@MvRxEpoxyController
-  com.airbnb.mvrx.withState(viewModel) { state ->
-    buildModels(state)
-  }
 }

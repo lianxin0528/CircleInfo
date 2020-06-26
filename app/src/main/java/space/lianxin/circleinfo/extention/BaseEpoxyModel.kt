@@ -1,4 +1,4 @@
-package space.lianxin.circleinfo
+package space.lianxin.circleinfo.extention
 
 import android.graphics.drawable.Drawable
 import android.view.View
@@ -6,7 +6,6 @@ import android.view.ViewGroup
 import androidx.annotation.ColorInt
 import androidx.annotation.ColorRes
 import androidx.annotation.DrawableRes
-import com.aimymusic.ambase.ui.holder.BaseEpoxyHolder
 import com.airbnb.epoxy.EpoxyAttribute
 import com.airbnb.epoxy.EpoxyModelWithHolder
 import com.blankj.utilcode.util.SizeUtils
@@ -69,13 +68,13 @@ abstract class BaseEpoxyModel<T : BaseEpoxyHolder> :
 
   override fun bind(holder: T) {
     super.bind(holder)
-    setSize(holder.view)
-    setBgColor(holder.view)
-    setBgDrawable(holder.view)
-    setMargin(holder.view)
-    setPadding(holder.view)
+    setSize(holder.itemView)
+    setBgColor(holder.itemView)
+    setBgDrawable(holder.itemView)
+    setMargin(holder.itemView)
+    setPadding(holder.itemView)
     onBind(holder)
-    onBind(holder.view)
+    onBind(holder.itemView)
   }
 
   private fun setSize(view: View) {

@@ -1,6 +1,7 @@
 apply plugin: 'com.android.application'
 apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-android-extensions'
+apply plugin: 'kotlin-kapt'
 
 android {
   compileSdkVersion 29
@@ -23,6 +24,15 @@ android {
     }
   }
 
+  kapt {
+    correctErrorTypes = true
+  }
+}
+
+kapt {
+  arguments {
+    arg("moduleName", project.getName())
+  }
 }
 
 dependencies {
@@ -30,8 +40,15 @@ dependencies {
   implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
   implementation 'androidx.appcompat:appcompat:1.1.0'
   implementation 'androidx.core:core-ktx:1.3.0'
+
   // AimyBase基础库
   implementation 'com.aimymusic.android:base:1.0.32'
+  // kapt
+  kapt 'com.airbnb.android:epoxy-processor:3.9.0'
+  // glide
+  implementation 'com.github.bumptech.glide:glide:4.9.0'
+  annotationProcessor 'com.github.bumptech.glide:compiler:4.5.0'
+
   testImplementation 'junit:junit:4.13'
   androidTestImplementation 'androidx.test.ext:junit:1.1.1'
   androidTestImplementation 'androidx.test.espresso:espresso-core:3.2.0'

@@ -3,6 +3,7 @@ package space.lianxin.circleinfo.extention
 import android.graphics.Bitmap
 import android.util.Log
 import android.widget.ImageView
+import com.bumptech.glide.Glide
 
 /**
  * description: ImageView的扩展.
@@ -14,6 +15,7 @@ import android.widget.ImageView
  */
 fun ImageView.load(url: String?, onSuccess: ((bitmap: Bitmap?) -> Unit)? = null) {
   url?.let {
-    Log.d("lianxin", "ImageView::load: $url")
+    Log.d("lianxin", "ImageView::load: $it")
+    Glide.with(this).load(it).into(this)
   }
 }

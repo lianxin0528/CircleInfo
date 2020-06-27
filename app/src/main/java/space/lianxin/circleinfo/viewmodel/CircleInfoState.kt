@@ -13,9 +13,7 @@ import space.lianxin.circleinfo.model.MessageBean
  */
 data class CircleInfoState(
   /** 圈子信息列表 */
-  val circleinfoBeans: List<CircleInfoBean> = listOf(
-    CircleInfoBean(1, "name1", "https://qlogo1.store.qq.com/qzone/43450340/43450340/100?1462622532", 0),
-    CircleInfoBean(1, "name1", "https://qlogo1.store.qq.com/qzone/43450340/43450340/100?1462622532", 0)),
+  val circleinfoBeans: List<CircleInfoBean> = emptyList(),
   /** 对应圈子列表的消息列表 */
   val messages: List<List<MessageBean>> = emptyList(),
   /** 请求状态 */

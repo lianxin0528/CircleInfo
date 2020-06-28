@@ -11,6 +11,7 @@ import space.lianxin.circleinfo.extention.BaseEpoxyHolder
 import space.lianxin.circleinfo.extention.BaseEpoxyModel
 import space.lianxin.circleinfo.R
 import space.lianxin.circleinfo.extention.load
+import java.text.SimpleDateFormat
 
 
 /**
@@ -26,10 +27,6 @@ abstract class CircleInfoItem : BaseEpoxyModel<BaseEpoxyHolder>() {
   lateinit var circleInfoBean: CircleInfoBean
 
   @EpoxyAttribute
-  /** 消息 */
-  lateinit var msgBeans: List<MessageBean>
-
-  @EpoxyAttribute
     /** 点击监听 */
   var click: ((v: View) -> Unit)? = null
 
@@ -43,18 +40,69 @@ abstract class CircleInfoItem : BaseEpoxyModel<BaseEpoxyHolder>() {
    */
   override fun onBind(itemView: View) {
     super.onBind(itemView)
+
+    // 是否置顶圈子,根据置顶修改item背景色
+    if (circleInfoBean.isTopLevel == true) {
+      itemView.setBackgroundColor(Color.rgb(0, 255, 255))
+    } else {
+      itemView.setBackgroundColor(Color.rgb(255, 255, 255))
+    }
+
+    // 有人@我
+    if (circleInfoBean.hasAtMe == true) {
+      itemView.tvCircleInfoAtMe.visibility = View.VISIBLE
+    } else {
+      itemView.tvCircleInfoAtMe.visibility = View.GONE
+    }
+
+    // 新增动态数
+    if (circleInfoBean.newDynamicCount > 0) {
+      itemView.tvCircleInfoDynamic.text = "[动态+${circleInfoBean.newDynamicCount}]"
+      itemView.tvCircleInfoDynamic.visibility = View.VISIBLE
+    } else {
+      itemView.tvCircleInfoDynamic.visibility = View.GONE
+    }
+
+    // 新增消息数
+    if (circleInfoBean.isDisturb == true) { // 开启了免打扰
+      // 隐藏具体消息数，并显示免打扰
+      itemView.tvCircleInfoMsgCount.visibility = View.GONE
+      itemView.ivCircleInfoDisturb.visibility = View.VISIBLE
+      // 判断是否有新消息
+      if (circleInfoBean.newMsgCount > 0) {
+        itemView.tvCircleInfoDisturbMsg.visibility = View.VISIBLE
+      } else {
+        itemView.tvCircleInfoDisturbMsg.visibility = View.GONE
+      }
+    } else {
+      itemView.gpCircleInfoDisturb.visibility = View.GONE
+      if (circleInfoBean.newMsgCount > 0) {
+        itemView.tvCircleInfoMsgCount.text = circleInfoBean.newMsgCount.toString()
+        itemView.tvCircleInfoMsgCount.visibility = View.VISIBLE
+      } else {
+        itemView.tvCircleInfoMsgCount.visibility = View.GONE
+      }
+    }
+
+    // 圈子中最后一条消息
+    if (circleInfoBean.lastMsg == null) {
+      itemView.tvCircleInfoTime.visibility = View.GONE
+      itemView.tvCircleInfoMsg.visibility = View.GONE
+    } else {
+      itemView.tvCircleInfoTime.visibility = View.VISIBLE
+      itemView.tvCircleInfoMsg.visibility = View.VISIBLE
+      itemView.tvCircleInfoMsg.text = "${circleInfoBean.lastMsg!!.fromName}:${circleInfoBean.lastMsg!!.msg}"
+      circleInfoBean.lastMsg!!.time?.let { date ->
+        itemView.tvCircleInfoTime.text = format.format(date)
+      }
+    }
+
     // 圈子头像
     itemView.ivCircleInfoIcon.load(circleInfoBean.iconUrl, null)
     // 圈子身份
     setCircleMark(itemView.tvCircleInfoMark, circleInfoBean.mark)
-    // 显示最后一条消息
-//    if (!this::msgBeans.isInitialized && msgBeans.isNotEmpty()) {
-//      msgBeans.let {
-//        itemView.tvCircleInfoMsg.text = it.last().msg
-//      }
-//    } else {
-//      itemView.tvCircleInfoMsg.text = ""
-//    }
+    // 圈子名称
+    itemView.tvCircleInfoName.text = circleInfoBean.name
 
     // 监听调用
     itemView.setOnClickListener(click)
@@ -81,4 +129,6 @@ abstract class CircleInfoItem : BaseEpoxyModel<BaseEpoxyHolder>() {
     }
   }
 
+  /** 时间格式化 */
+  private val format: SimpleDateFormat = SimpleDateFormat("HH:mm")
 }

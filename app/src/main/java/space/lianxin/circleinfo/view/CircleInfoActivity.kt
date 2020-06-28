@@ -2,19 +2,19 @@ package space.lianxin.circleinfo.view
 
 import android.util.Log
 import android.view.View
-import com.airbnb.mvrx.BaseMvRxViewModel
-import com.airbnb.mvrx.MvRxState
+import android.widget.Toast
 import com.airbnb.mvrx.withState
-import io.reactivex.disposables.Disposable
 import kotlinx.android.synthetic.main.activity_circle_info.*
 import kotlinx.android.synthetic.main.layout_title.*
 import space.lianxin.circleinfo.R
 import space.lianxin.circleinfo.extention.CommMvRxEpoxyActivity
 import space.lianxin.circleinfo.extention.simpleController
 import space.lianxin.circleinfo.model.CircleInfoBean
+import space.lianxin.circleinfo.model.MessageBean
 import space.lianxin.circleinfo.model.circleInfoItem
 import space.lianxin.circleinfo.viewmodel.CircleInfoState
 import space.lianxin.circleinfo.viewmodel.CircleInfoViewModel
+import java.util.*
 
 /**
  * 圈子消息列表视图
@@ -57,10 +57,6 @@ open class CircleInfoActivity : CommMvRxEpoxyActivity(), View.OnClickListener {
           circleInfoItem {
             id(state.circleinfoBeans[i].id) // id标识
             circleInfoBean(state.circleinfoBeans[i]) // 圈子信息
-//            msgBeans(state.messages[i])
-//            if (state.messages.isNotEmpty()) {
-//              msgBeans(state.messages[i])
-//            }
             // 单击item条目
             click { Log.d("qingyi", "CircleInfoActivity::epoxyController: click") }
             // 长按item条目
@@ -88,22 +84,18 @@ open class CircleInfoActivity : CommMvRxEpoxyActivity(), View.OnClickListener {
       erlCircleInfoList.requestModelBuild()
 //      postInvalidate()
     }
-    // 圈子消息
-    viewModel.selectSubscribe(
-      this,
-      prop1 = CircleInfoState::messages,
-      uniqueOnly = true
-    ) {
-      Log.d("qingyi", "CircleInfoActivity::selectSubscribe: messages=$it")
-      erlCircleInfoList.requestModelBuild()
-    }
   }
+
+  /** 虚拟圈子id */
+  private var circleId = 10
 
   /** 点击事件 */
   override fun onClick(v: View?) {
     when (v?.id) {
       R.id.btn1 -> { // 第1个按钮
-        viewModel.addCircleInfo(CircleInfoBean(7, "华胥引", CircleInfoViewModel.IMG_URL_1, 0))
+        Toast.makeText(this, "新增一个圈子信息", Toast.LENGTH_SHORT).show()
+        val lastMsg: MessageBean? = MessageBean(152L, "我是一条消息", 12, "故乡的Sakura", 12, Date())
+        viewModel.addCircleInfo(CircleInfoBean(circleId++, Date().time, isTopLevel = false, hasAtMe = false, newDynamicCount = 0, newMsgCount = 0, isDisturb = true, name = "newName", iconUrl = CircleInfoViewModel.IMG_URL_1, mark = 0, lastMsg = lastMsg))
       }
       R.id.btn2 -> { // 第2个按钮
       }

@@ -48,11 +48,11 @@
 
   <!-- 消息等下部分 -->
   <TextView
-      android:id="@+id/tvCircleInfoWithme"
+      android:id="@+id/tvCircleInfoAtMe"
       android:layout_width="wrap_content"
       android:layout_height="wrap_content"
       android:maxLines="1"
-      android:text="[有人@你]"
+      android:text="@string/CircleInfoAtMe"
       android:textColor="#FF6521"
       android:textSize="14sp"
       android:visibility="gone"
@@ -61,7 +61,7 @@
       />
 
   <TextView
-      android:id="@+id/tvCircleInfoDynicDynamic"
+      android:id="@+id/tvCircleInfoDynamic"
       android:layout_width="wrap_content"
       android:layout_height="wrap_content"
       android:layout_marginStart="6dp"
@@ -71,7 +71,7 @@
       android:textSize="14sp"
       android:visibility="visible"
       app:layout_constraintBottom_toBottomOf="@id/ivCircleInfoIcon"
-      app:layout_constraintStart_toEndOf="@id/tvCircleInfoWithme"
+      app:layout_constraintStart_toEndOf="@id/tvCircleInfoAtMe"
       />
 
   <ImageView
@@ -83,9 +83,9 @@
       android:src="@drawable/ic_circle_info_error_msg"
       android:tint="#FF324D"
       android:visibility="gone"
-      app:layout_constraintBottom_toBottomOf="@id/tvCircleInfoDynicDynamic"
-      app:layout_constraintStart_toEndOf="@id/tvCircleInfoDynicDynamic"
-      app:layout_constraintTop_toTopOf="@id/tvCircleInfoDynicDynamic"
+      app:layout_constraintBottom_toBottomOf="@id/tvCircleInfoDynamic"
+      app:layout_constraintStart_toEndOf="@id/tvCircleInfoDynamic"
+      app:layout_constraintTop_toTopOf="@id/tvCircleInfoDynamic"
       />
 
   <TextView
@@ -118,6 +118,7 @@
       />
 
   <TextView
+      android:id="@+id/tvCircleInfoMsgCount"
       android:layout_width="25dp"
       android:layout_height="18dp"
       android:layout_marginEnd="16dp"

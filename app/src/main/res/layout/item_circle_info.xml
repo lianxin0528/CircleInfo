@@ -139,6 +139,7 @@
       android:layout_height="8dp"
       android:layout_marginEnd="16dp"
       android:background="@drawable/shape_circle"
+      android:visibility="gone"
       app:layout_constraintBottom_toBottomOf="@id/ivCircleInfoIcon"
       app:layout_constraintEnd_toEndOf="parent"
       />
@@ -150,16 +151,9 @@
       android:padding="2dp"
       android:src="@drawable/ic_circle_info_disturb"
       android:tint="#CCCCCC"
+      android:visibility="gone"
       app:layout_constraintBottom_toBottomOf="@id/ivCircleInfoIcon"
       app:layout_constraintEnd_toStartOf="@id/tvCircleInfoDisturbMsg"
-      />
-
-  <androidx.constraintlayout.widget.Group
-      android:id="@+id/gpCircleInfoDisturb"
-      android:layout_width="wrap_content"
-      android:layout_height="wrap_content"
-      android:visibility="gone"
-      app:constraint_referenced_ids="ivCircleInfoDisturb,tvCircleInfoDisturbMsg"
       />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

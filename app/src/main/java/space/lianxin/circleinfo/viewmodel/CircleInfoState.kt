@@ -12,7 +12,7 @@ import space.lianxin.circleinfo.model.CircleInfoBean
  */
 data class CircleInfoState(
   /** 圈子信息列表 */
-  val circleinfoBeans: List<CircleInfoBean> = emptyList(),
+  val circleInfoBeans: List<CircleInfoBean> = emptyList(),
   /** 请求状态 */
   val request: Async<List<CircleInfoBean>> = Uninitialized
 ) : MvRxState

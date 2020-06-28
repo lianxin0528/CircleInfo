@@ -52,15 +52,21 @@ open class CircleInfoActivity : CommMvRxEpoxyActivity(), View.OnClickListener {
   /** 加载Controller */
   override fun epoxyController() = simpleController(viewModel) {
     withState(viewModel) { state ->
-      if (state.circleinfoBeans.isNotEmpty()) {
-        for (i in state.circleinfoBeans.indices) {
+      if (state.circleInfoBeans.isNotEmpty()) {
+        for (i in state.circleInfoBeans.indices) {
           circleInfoItem {
-            id(state.circleinfoBeans[i].id) // id标识
-            circleInfoBean(state.circleinfoBeans[i]) // 圈子信息
+            id(state.circleInfoBeans[i].id) // id标识
+            circleInfoBean(state.circleInfoBeans[i]) // 圈子信息
             // 单击item条目
-            click { Log.d("qingyi", "CircleInfoActivity::epoxyController: click") }
+            click {
+              // 清除未读
+              viewModel.clearNotRead(state.circleInfoBeans[i])
+              Log.d("qingyi", "CircleInfoActivity::epoxyController: click")
+            }
             // 长按item条目
             longClick {
+              // 长按 置顶/取消置顶
+              viewModel.topLevel(state.circleInfoBeans[i])
               Log.d("qingyi", "CircleInfoActivity::epoxyController: longClick")
               true
             }
@@ -77,12 +83,12 @@ open class CircleInfoActivity : CommMvRxEpoxyActivity(), View.OnClickListener {
     // 圈子信息
     viewModel.selectSubscribe(
       this,
-      prop1 = CircleInfoState::circleinfoBeans,
+      prop1 = CircleInfoState::circleInfoBeans,
       uniqueOnly = true
     ) {
       Log.d("qingyi", "CircleInfoActivity::selectSubscribe: circleinfoBeans=${it}")
-      erlCircleInfoList.requestModelBuild()
-//      postInvalidate()
+//      erlCircleInfoList.requestModelBuild()
+      postInvalidate()
     }
   }
 
@@ -94,12 +100,16 @@ open class CircleInfoActivity : CommMvRxEpoxyActivity(), View.OnClickListener {
     when (v?.id) {
       R.id.btn1 -> { // 第1个按钮
         Toast.makeText(this, "新增一个圈子信息", Toast.LENGTH_SHORT).show()
-        val lastMsg: MessageBean? = MessageBean(152L, "我是一条消息", 12, "故乡的Sakura", 12, Date())
-        viewModel.addCircleInfo(CircleInfoBean(circleId++, Date().time, isTopLevel = false, hasAtMe = false, newDynamicCount = 0, newMsgCount = 0, isDisturb = true, name = "newName", iconUrl = CircleInfoViewModel.IMG_URL_1, mark = 0, lastMsg = lastMsg))
+        val lastMsg: MessageBean? = MessageBean(152L, "我是一条消息$circleId", 12, "故乡的Sakura", 12, Date())
+        viewModel.addCircleInfo(CircleInfoBean(circleId++, Date().time, isTopLevel = false, hasAtMe = false, newDynamicCount = 0, newMsgCount = 1, isDisturb = true, name = "newName", iconUrl = CircleInfoViewModel.IMG_URL_1, mark = 0, lastMsg = lastMsg))
       }
       R.id.btn2 -> { // 第2个按钮
+        Toast.makeText(this, "开启/关闭消息", Toast.LENGTH_SHORT).show()
+        viewModel.receiveMsg()
       }
       R.id.btn3 -> { // 第3个按钮
+        Toast.makeText(this, "开启/关闭topItem免打扰", Toast.LENGTH_SHORT).show()
+        viewModel.disturb(CircleInfoBean(null, null, null, null, 0, 0, null, null, null, null, null))
       }
       R.id.btn4 -> { // 第4个按钮
       }
@@ -109,8 +119,8 @@ open class CircleInfoActivity : CommMvRxEpoxyActivity(), View.OnClickListener {
   }
 
   override fun invalidate() {
-    super.invalidate()
     Log.d("qingyi", "CircleInfoActivity::invalidate: ")
+    super.invalidate()
 //    erlCircleInfoList.requestModelBuild()
   }
 

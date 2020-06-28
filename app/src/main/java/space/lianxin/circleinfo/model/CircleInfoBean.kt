@@ -8,7 +8,7 @@ package space.lianxin.circleinfo.model
 data class CircleInfoBean(
   /** 圈子ID(主键) */
   val id: Int?,
-  /** 上次处理时间 */
+  /** 上次操作时间 */
   val lastExcuteTime: Long?,
   /** 是否置顶圈子 */
   val isTopLevel: Boolean?,

@@ -34,7 +34,6 @@ abstract class CircleInfoItem : BaseEpoxyModel<BaseEpoxyHolder>() {
     /** 长按监听 */
   var longClick: ((v: View) -> Boolean)? = null
 
-
   /**
    * 绑定视图
    */
@@ -74,8 +73,9 @@ abstract class CircleInfoItem : BaseEpoxyModel<BaseEpoxyHolder>() {
       } else {
         itemView.tvCircleInfoDisturbMsg.visibility = View.GONE
       }
-    } else {
-      itemView.gpCircleInfoDisturb.visibility = View.GONE
+    } else { // 未开启免打扰
+      itemView.tvCircleInfoDisturbMsg.visibility = View.GONE
+      itemView.ivCircleInfoDisturb.visibility = View.GONE
       if (circleInfoBean.newMsgCount > 0) {
         itemView.tvCircleInfoMsgCount.text = circleInfoBean.newMsgCount.toString()
         itemView.tvCircleInfoMsgCount.visibility = View.VISIBLE

@@ -1,6 +1,7 @@
 package space.lianxin.circleinfo.model
 
 import android.graphics.Color
+import android.util.Log
 import android.view.View
 import android.widget.TextView
 import com.airbnb.epoxy.EpoxyAttribute
@@ -22,21 +23,23 @@ import java.text.SimpleDateFormat
 @EpoxyModelClass(layout = R.layout.item_circle_info)
 abstract class CircleInfoItem : BaseEpoxyModel<BaseEpoxyHolder>() {
 
-  @EpoxyAttribute
   /** 圈子信息 */
+  @EpoxyAttribute
   lateinit var circleInfoBean: CircleInfoBean
 
+  /** 点击监听 */
   @EpoxyAttribute
-    /** 点击监听 */
   var click: ((v: View) -> Unit)? = null
 
+  /** 长按监听 */
   @EpoxyAttribute
-    /** 长按监听 */
   var longClick: ((v: View) -> Boolean)? = null
 
   /** 绑定视图 */
   override fun onBind(itemView: View) {
     super.onBind(itemView)
+
+    Log.d("qingyi", "CircleInfoItem::onBind: ")
 
     // 是否置顶圈子,根据置顶修改item背景色
     if (circleInfoBean.isTopLevel == true) {

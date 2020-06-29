@@ -15,7 +15,7 @@ import com.bumptech.glide.Glide
  */
 fun ImageView.load(url: String?, onSuccess: ((bitmap: Bitmap?) -> Unit)? = null) {
   url?.let {
-    Log.d("lianxin", "ImageView::load: $it")
+    Log.d("qingyi", "ImageView::load: $it")
     Glide.with(this).load(it).into(this)
   }
 }

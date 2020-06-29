@@ -51,6 +51,7 @@ open class CircleInfoActivity : CommMvRxEpoxyActivity(), View.OnClickListener {
 
   /** 加载Controller */
   override fun epoxyController() = simpleController(viewModel) {
+    Log.d("qingyi", "CircleInfoActivity::epoxyController: simpleController")
     withState(viewModel) { state ->
       if (state.circleInfoBeans.isNotEmpty()) {
         for (i in state.circleInfoBeans.indices) {
@@ -61,13 +62,11 @@ open class CircleInfoActivity : CommMvRxEpoxyActivity(), View.OnClickListener {
             click {
               // 清除未读
               viewModel.clearNotRead(state.circleInfoBeans[i])
-              Log.d("qingyi", "CircleInfoActivity::epoxyController: click")
             }
             // 长按item条目
             longClick {
               // 长按 置顶/取消置顶
               viewModel.topLevel(state.circleInfoBeans[i])
-              Log.d("qingyi", "CircleInfoActivity::epoxyController: longClick")
               true
             }
           }
@@ -121,7 +120,6 @@ open class CircleInfoActivity : CommMvRxEpoxyActivity(), View.OnClickListener {
   override fun invalidate() {
     Log.d("qingyi", "CircleInfoActivity::invalidate: ")
     super.invalidate()
-//    erlCircleInfoList.requestModelBuild()
   }
 
 }

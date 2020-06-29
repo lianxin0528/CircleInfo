@@ -1,5 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-  <!-- Button最小宽度 -->
-  <dimen name="btnTitleWidth">72dp</dimen>
+  <!-- Button宽度 -->
+  <dimen name="layoutTitleBtnWidth">72dp</dimen>
+  <!-- 圈子信息item -->
+  <dimen name="circleInfoItemPaddingEnd">16dp</dimen>
+  <dimen name="circleInfoItemHeight">72dp</dimen>
+
 </resources>

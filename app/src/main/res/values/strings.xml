@@ -3,6 +3,6 @@
 
   <!-- 圈子主页 -->
   <string name="CircleInfoAtMe">[有人@你]</string>
-  <string name="CircleInfoDynamic">[动态+%1$d]</string>
+  <string name="CircleInfoDynamic">[动态+3]</string>
 
 </resources>

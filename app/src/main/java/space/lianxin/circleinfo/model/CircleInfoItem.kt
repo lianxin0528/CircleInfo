@@ -34,9 +34,7 @@ abstract class CircleInfoItem : BaseEpoxyModel<BaseEpoxyHolder>() {
     /** 长按监听 */
   var longClick: ((v: View) -> Boolean)? = null
 
-  /**
-   * 绑定视图
-   */
+  /** 绑定视图 */
   override fun onBind(itemView: View) {
     super.onBind(itemView)
 

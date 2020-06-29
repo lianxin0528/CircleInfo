@@ -2,7 +2,9 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="72dp"
+    android:layout_height="@dimen/circleInfoItemHeight"
+    android:paddingStart="0dp"
+    android:paddingEnd="@dimen/circleInfoItemPaddingEnd"
     >
 
   <!-- 头像部分 -->
@@ -11,8 +13,11 @@
       android:layout_width="48dp"
       android:layout_height="48dp"
       android:layout_marginStart="16dp"
+      android:layout_marginEnd="12.5dp"
+      android:contentDescription="@string/app_name"
       android:src="@color/colorAccent"
       app:layout_constraintBottom_toBottomOf="parent"
+      app:layout_constraintEnd_toStartOf="@id/tvCircleInfoName"
       app:layout_constraintStart_toStartOf="parent"
       app:layout_constraintTop_toTopOf="parent"
       />
@@ -34,16 +39,18 @@
   <!-- 圈名称等上部分 -->
   <TextView
       android:id="@+id/tvCircleInfoName"
-      android:layout_width="wrap_content"
+      android:layout_width="0dp"
       android:layout_height="wrap_content"
-      android:layout_marginStart="12.5dp"
+      android:layout_marginTop="5dp"
       android:ellipsize="end"
       android:maxLines="1"
       android:text="林俊杰广州粉丝圈"
       android:textColor="#333333"
       android:textStyle="bold"
+      app:layout_constraintEnd_toStartOf="@id/tvCircleInfoTime"
       app:layout_constraintStart_toEndOf="@id/ivCircleInfoIcon"
       app:layout_constraintTop_toTopOf="@id/ivCircleInfoIcon"
+      app:layout_goneMarginEnd="16dp"
       />
 
   <!-- 消息等下部分 -->
@@ -51,56 +58,70 @@
       android:id="@+id/tvCircleInfoAtMe"
       android:layout_width="wrap_content"
       android:layout_height="wrap_content"
+      android:layout_marginTop="8dp"
+      android:layout_marginEnd="6dp"
+      android:layout_marginBottom="4dp"
       android:maxLines="1"
       android:text="@string/CircleInfoAtMe"
       android:textColor="#FF6521"
       android:textSize="14sp"
-      android:visibility="gone"
+      android:visibility="visible"
       app:layout_constraintBottom_toBottomOf="@id/ivCircleInfoIcon"
+      app:layout_constraintEnd_toStartOf="@id/tvCircleInfoDynamic"
       app:layout_constraintStart_toStartOf="@id/tvCircleInfoName"
+      app:layout_constraintTop_toBottomOf="@id/tvCircleInfoName"
       />
 
   <TextView
       android:id="@+id/tvCircleInfoDynamic"
       android:layout_width="wrap_content"
       android:layout_height="wrap_content"
-      android:layout_marginStart="6dp"
+      android:layout_marginTop="8dp"
+      android:layout_marginEnd="5dp"
+      android:layout_marginBottom="4dp"
       android:maxLines="1"
-      android:text="[动态+3]"
+      android:text="@string/CircleInfoDynamic"
       android:textColor="#30D18B"
       android:textSize="14sp"
       android:visibility="visible"
       app:layout_constraintBottom_toBottomOf="@id/ivCircleInfoIcon"
+      app:layout_constraintEnd_toStartOf="@id/ivCircleInfoError"
       app:layout_constraintStart_toEndOf="@id/tvCircleInfoAtMe"
+      app:layout_constraintTop_toBottomOf="@id/tvCircleInfoName"
       />
 
   <ImageView
       android:id="@+id/ivCircleInfoError"
       android:layout_width="16dp"
       android:layout_height="16dp"
-      android:layout_marginStart="4.5dp"
+      android:layout_marginEnd="2.5dp"
+      android:contentDescription="@string/app_name"
       android:padding="2dp"
       android:src="@drawable/ic_circle_info_error_msg"
       android:tint="#FF324D"
       android:visibility="gone"
-      app:layout_constraintBottom_toBottomOf="@id/tvCircleInfoDynamic"
+      app:layout_constraintBottom_toBottomOf="@id/tvCircleInfoMsg"
+      app:layout_constraintEnd_toStartOf="@id/tvCircleInfoMsg"
       app:layout_constraintStart_toEndOf="@id/tvCircleInfoDynamic"
-      app:layout_constraintTop_toTopOf="@id/tvCircleInfoDynamic"
+      app:layout_constraintTop_toTopOf="@id/tvCircleInfoMsg"
       />
 
   <TextView
       android:id="@+id/tvCircleInfoMsg"
-      android:layout_width="wrap_content"
+      android:layout_width="0dp"
       android:layout_height="wrap_content"
-      android:layout_marginStart="2.5dp"
+      android:layout_marginTop="8dp"
+      android:layout_marginBottom="4dp"
       android:ellipsize="end"
       android:maxLines="1"
       android:text="海绵宝宝：我觉得还行"
       android:textColor="#999999"
       android:textSize="14sp"
+      android:visibility="visible"
       app:layout_constraintBottom_toBottomOf="@id/ivCircleInfoIcon"
+      app:layout_constraintEnd_toStartOf="@id/barCircleInfoEnd"
       app:layout_constraintStart_toEndOf="@id/ivCircleInfoError"
-      app:layout_goneMarginStart="5dp"
+      app:layout_constraintTop_toBottomOf="@id/tvCircleInfoName"
       />
 
   <!-- item尾部 -->
@@ -108,12 +129,12 @@
       android:id="@+id/tvCircleInfoTime"
       android:layout_width="wrap_content"
       android:layout_height="wrap_content"
-      android:layout_marginEnd="16.5dp"
-      android:text="12:08"
       android:textColor="#999999"
       android:textSize="12sp"
+      android:visibility="visible"
       app:layout_constraintBottom_toBottomOf="@id/tvCircleInfoName"
       app:layout_constraintEnd_toEndOf="parent"
+      app:layout_constraintStart_toEndOf="@id/tvCircleInfoName"
       app:layout_constraintTop_toTopOf="@id/tvCircleInfoName"
       />
 
@@ -121,39 +142,54 @@
       android:id="@+id/tvCircleInfoMsgCount"
       android:layout_width="25dp"
       android:layout_height="18dp"
-      android:layout_marginEnd="16dp"
       android:background="@drawable/item_circle_info_count_bg"
+      android:foregroundGravity="center"
       android:gravity="center"
-      android:text="24"
       android:textColor="#FFFFFF"
       android:textSize="12sp"
       android:textStyle="bold"
       android:visibility="visible"
-      app:layout_constraintBottom_toBottomOf="@id/ivCircleInfoIcon"
+      app:layout_constraintBottom_toBottomOf="@id/tvCircleInfoMsg"
       app:layout_constraintEnd_toEndOf="parent"
+      app:layout_constraintTop_toTopOf="@id/tvCircleInfoMsg"
       />
 
   <TextView
       android:id="@+id/tvCircleInfoDisturbMsg"
       android:layout_width="8dp"
       android:layout_height="8dp"
-      android:layout_marginEnd="16dp"
+      android:layout_marginStart="8dp"
       android:background="@drawable/shape_circle"
-      android:visibility="gone"
-      app:layout_constraintBottom_toBottomOf="@id/ivCircleInfoIcon"
+      android:visibility="visible"
+      app:layout_constraintBottom_toBottomOf="@id/ivCircleInfoDisturb"
       app:layout_constraintEnd_toEndOf="parent"
+      app:layout_constraintStart_toEndOf="@id/ivCircleInfoDisturb"
+      app:layout_constraintTop_toTopOf="@id/ivCircleInfoDisturb"
       />
 
   <ImageView
       android:id="@+id/ivCircleInfoDisturb"
       android:layout_width="16dp"
       android:layout_height="16dp"
+      android:layout_marginTop="8dp"
+      android:layout_marginBottom="4dp"
+      android:contentDescription="@string/app_name"
       android:padding="2dp"
       android:src="@drawable/ic_circle_info_disturb"
       android:tint="#CCCCCC"
-      android:visibility="gone"
+      android:visibility="visible"
       app:layout_constraintBottom_toBottomOf="@id/ivCircleInfoIcon"
       app:layout_constraintEnd_toStartOf="@id/tvCircleInfoDisturbMsg"
+      app:layout_constraintStart_toEndOf="@id/barCircleInfoEnd"
+      app:layout_constraintTop_toBottomOf="@id/tvCircleInfoName"
+      />
+
+  <androidx.constraintlayout.widget.Barrier
+      android:id="@+id/barCircleInfoEnd"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      app:barrierDirection="start"
+      app:constraint_referenced_ids="tvCircleInfoDisturbMsg,ivCircleInfoDisturb,tvCircleInfoMsgCount"
       />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
